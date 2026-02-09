@@ -21,13 +21,13 @@ void	print_statistics(int signal_id)
 	unsigned int lossrate;
 
 	close_pcap();
-	if (recv_pkt > 0)
-		lossrate = 100 - ((recv_pkt*100)/sent_pkt);
-	else
-		if (!sent_pkt)
-			lossrate = 0;
-		else
-			lossrate = 100;
+	if (sent_pkt == 0) {
+   		lossrate = 0;
+	} else if (recv_pkt >= sent_pkt) {
+	    lossrate = 0;
+	} else {
+	    lossrate = 100 - ((recv_pkt * 100) / sent_pkt);
+	}
 
 	fprintf(stderr, "\n--- %s hping statistic ---\n", targetname);
 	fprintf(stderr, "%d packets tramitted, %d packets received, "
